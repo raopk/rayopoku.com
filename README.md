@@ -1,2 +1,2 @@
 # rayopoku.com
-A portofolio for my PhD
+A portofolio showcase for my for my PhD journey
