@@ -1,5 +1,6 @@
 <html>
 <head>
+   <title>Ray's Trivia</title> 
 </head>
 
 <body bgcolor="#99ccff">
@@ -10,18 +11,16 @@
   <tr>
     <td width="50%"><form method="POST" name="instantquiz">
       <table border="0" width="100%" cellspacing="0" cellpadding="0">
-        <h1 style="font-size:6vw";"> Ray's Trivia </h1>
-      
-        <caption> <strong> Ray's Trivia</strong></caption>
+        <caption><strong>Ray's Trivia</strong></caption>
         <tr>
           <td width="100%"><div align="center"><center><p><textarea rows="10" name="thequestion"
           cols="69" wrap="virtual"></textarea></td>
         </tr>
-        <tr align="center"> <br><br><br>
+        <tr align="center">
           <td width="50%"><div align="center"><center><p><strong>Solution: </strong><input
           type="text" name="thesolution" size="35"></td>
         </tr>
-        <tr align="center"> 
+        <tr align="center">
           <td width="100%"><div align="center"><center><p><strong>Your response:</strong> <select
           name="theresponse" size="1" onChange="responses()">
             <option value="-----">----</option>
@@ -32,9 +31,9 @@
           </select> <input type="button" value="&lt;&lt;Back" name="B1"
           onClick="if (whichone&gt;1){whichone--;generatequestions()}"> <input type="button"
           value="Next&gt;&gt;" name="B2"
-          onClick="if (whichone&lt;=total){whichone++;generatequestions()}"><br><br><br>
+          onClick="if (whichone&lt;=total){whichone++;generatequestions()}"><br>
           <small><a href="#" onClick="whichone=1;generatequestions();return false">Start Over</a> </small><input
-          type="checkbox" name="cmode" value="ON"><small>Cheat Mode</small><hr><p align="center"><font face="arial" size="-2">This free quiz script provided by</font><br> <font face="arial, helvetica" size="-2"><a href="http://javascriptkit.com">JavaScript Kit</a></font></p></td>
+          type="checkbox" name="cmode" value="ON"><small>Cheat Mode</small><p align="center"><font face="arial" size="-2">This free quiz script provided by</font><br> <font face="arial, helvetica" size="-2"><a href="http://javascriptkit.com">JavaScript Kit</a></font></p></td>
         </tr>
       </table>
     </form>
