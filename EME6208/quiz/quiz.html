@@ -4,7 +4,8 @@
 </head>
 
 <body bgcolor="#99ccff">
- <h1 style="text-align:center">Ray's Trivia</h1>
+<h1 style="text-align:center"><font face="Comic Sans MS">Ray's Trivia</h1>
+<center><img src="./images/trivia.jpg"></center>
 <div align="left">
 
 <table border="0" cellspacing="0" cellpadding="0" width="100%">
@@ -15,13 +16,8 @@
         <tr>
           <td width="100%"><div align="center"><center><p><textarea rows="10" name="thequestion"
           cols="69" wrap="virtual"></textarea></td>
-        </tr>
         <tr align="center">
-          <td width="50%"><div align="center"><center><p><strong>Solution: </strong><input
-          type="text" name="thesolution" size="35"></td>
-        </tr>
-        <tr align="center"><br><br><br>
-          <td width="100%"><div align="center"><center><p><strong>Your response:</strong> <select
+          <td width="100%"><div align="center"><br><center><p><strong>Select Your response:</strong> <select
           name="theresponse" size="1" onChange="responses()">
             <option value="-----">----</option>
             <option value="a">a</option>
@@ -32,9 +28,17 @@
           onClick="if (whichone&gt;1){whichone--;generatequestions()}"> <input type="button"
           value="Next&gt;&gt;" name="B2"
           onClick="if (whichone&lt;=total){whichone++;generatequestions()}"><br><br><br>
-          <small><a href="#" onClick="whichone=1;generatequestions();return false">Start Over</a> </small><input
-          type="checkbox" name="cmode" value="ON"><small>Cheat Mode</small><hr><p align="center"><font face="arial" size="-2">This free quiz script provided by</font><br> <font face="arial, helvetica" size="-2"><a href="http://javascriptkit.com">JavaScript Kit</a></font></p></td>
+      <!--     <small><a href="#" onClick="whichone=1;generatequestions();return false">Start Over</a> </small><input
+          type="checkbox" name="cmode" value="ON"><small>Cheat Mode</small><hr><p align="center"><font face="arial" size="-2">This free quiz script provided by</font><br> <font face="arial, helvetica" size="-2"><a href="http://javascriptkit.com">JavaScript Kit</a></font></p></td> -->
         </tr>
+        </tr> <br>
+        <tr align="center">
+          <td width="50%"><div align="center"><center><p><strong>Solution: </strong><input
+          type="text" name="thesolution" size="35"> <br><br><br>
+          <small><a href="#" onClick="whichone=1;generatequestions();return false">Start Over</a> </small><input
+          type="checkbox" name="cmode" value="ON"><small>Cheat Mode</small><hr><p align="center"><font face="Comic Sans MS" size="-2">This free quiz script provided by</font><br> <font face="Comic Sans MS" size="-2"><a href="http://javascriptkit.com">JavaScript Kit</a></font></p></td>
+        </tr> <br>
+
       </table>
     </form>
     </td>
