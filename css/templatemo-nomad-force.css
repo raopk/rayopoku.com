@@ -378,6 +378,19 @@ strong {
   text-align: center;
 }
 
+.heroText .hero-dot {
+  color: rgba(255, 255, 255, 0.6);
+  margin: 0 6px;
+}
+
+.heroText .hero-sub {
+  font-size: 16px;
+  font-weight: var(--font-weight-light);
+  letter-spacing: 1px;
+  margin-top: 8px;
+  opacity: 0.85;
+}
+
 /*---------------------------------------
   ABOUT & TEAM MEMBERS               
 -----------------------------------------*/
@@ -429,6 +442,160 @@ strong {
 
 .portfolio-info {
   margin: 20px;
+}
+
+/*---------------------------------------
+  RESEARCH
+-----------------------------------------*/
+.research {
+  background: var(--white-color);
+}
+
+.research-intro,
+.projects-intro {
+  max-width: 640px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.projects-link {
+  color: var(--dark-color);
+  font-weight: var(--font-weight-bold);
+  border-bottom: 2px solid var(--primary-color);
+}
+
+.projects-link:hover {
+  color: var(--primary-color);
+}
+
+.focus-card {
+  background: var(--section-bg-color);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 20px;
+  height: 100%;
+  padding: 32px 28px;
+  transition: all 0.4s ease-out;
+}
+
+.focus-card:hover {
+  border-color: var(--primary-color);
+  transform: translateY(-6px);
+}
+
+.focus-card-icon {
+  background: var(--dark-color);
+  border-radius: 50%;
+  color: var(--white-color);
+  width: 56px;
+  height: 56px;
+  font-size: 24px;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  transition: all 0.4s ease-out;
+}
+
+.focus-card:hover .focus-card-icon {
+  background: var(--primary-color);
+}
+
+.focus-card-title {
+  color: var(--dark-color);
+  margin-bottom: 10px;
+}
+
+.focus-card-text {
+  font-size: 17px;
+}
+
+.pub-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.pub-item {
+  display: flex;
+  gap: 28px;
+  padding: 24px 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.pub-year {
+  color: var(--primary-color);
+  font-size: 18px;
+  font-weight: var(--font-weight-bold);
+  flex: 0 0 64px;
+  padding-top: 2px;
+}
+
+.pub-body {
+  min-width: 0;
+}
+
+.pub-title {
+  color: var(--dark-color);
+  font-size: 20px;
+  font-weight: var(--font-weight-bold);
+  line-height: 1.4;
+  display: inline-block;
+  margin-bottom: 6px;
+}
+
+.pub-title:hover {
+  color: var(--primary-color);
+}
+
+.pub-meta {
+  font-size: 16px;
+}
+
+.profile-links-label {
+  color: var(--title-color);
+  font-size: 16px;
+  font-weight: var(--font-weight-bold);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.profile-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+}
+
+.profile-link {
+  background: var(--section-bg-color);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 100px;
+  color: var(--dark-color);
+  font-size: 16px;
+  font-weight: var(--font-weight-bold);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 22px;
+  transition: all 0.3s ease-out;
+}
+
+.profile-link svg {
+  width: 22px;
+  height: 22px;
+}
+
+.profile-link i {
+  font-size: 20px;
+  line-height: 1;
+}
+
+.profile-link:hover {
+  background: var(--dark-color);
+  border-color: var(--dark-color);
+  color: var(--white-color);
 }
 
 /*---------------------------------------
@@ -737,6 +904,16 @@ strong {
     padding-bottom: 6rem;
   }
 
+  .videoWrapper {
+    padding-bottom: 0;
+    height: 62vh;
+    min-height: 380px;
+  }
+
+  .custom-video {
+    object-fit: cover;
+  }
+
   .team-thumb {
     left: 0;
     width: auto;
@@ -778,6 +955,37 @@ strong {
 
   .contact-card-label {
     font-size: 18px;
+  }
+
+  .heroText p {
+    font-size: 14px;
+  }
+
+  .heroText .hero-dot {
+    margin: 0 4px;
+  }
+
+  .heroText .hero-sub {
+    font-size: 12px;
+    margin-top: 4px;
+  }
+
+  .pub-item {
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .pub-year {
+    flex: none;
+  }
+
+  .pub-title {
+    font-size: 18px;
+  }
+
+  .profile-link {
+    width: 100%;
+    justify-content: center;
   }
 }
 
