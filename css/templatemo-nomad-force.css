@@ -803,11 +803,6 @@ strong {
   font-weight: var(--font-weight-bold);
 }
 
-.map-iframe {
-  display: block;
-  filter: grayscale(100);
-}
-
 /*---------------------------------------
   SITE FOOTER               
 -----------------------------------------*/
