@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Feeds">
+<meta name="theme-color" content="#0c0c0f">
+<link rel="apple-touch-icon" href="icon.png">
+<link rel="icon" href="icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<title>Ray's Feeds</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;800&display=swap">
+<style>
+/* Layout: phone-first column. Header, search, 2-col tinted cards, add/edit sheet. Single dark look by design. */
+:root{
+  --bg:#0c0c0f;--card:#18181d;--card2:#222228;--fg:#f3f2f7;--muted:#9b99a6;--line:#2c2b33;--accent:#fb542b;--danger:#ff5a5f;
+  --display:"Manrope",system-ui,-apple-system,sans-serif;--body:"Manrope",system-ui,-apple-system,sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{min-height:100%}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:16px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:24px 48px}
+.wrap{max-width:560px;margin:0 auto;display:flex;flex-direction:column;gap:20px}
+header{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+h1{font-family:var(--display);font-weight:800;font-size:2.4rem;letter-spacing:-0.035em;margin:0;line-height:1}
+h1 span{color:var(--accent)}
+.tag{color:var(--muted);margin:6px 0 0;font-size:.95rem}
+.hbtns{display:flex;gap:8px;flex-shrink:0}
+.iconbtn{height:40px;padding:0 14px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--fg);
+  font:inherit;font-weight:600;font-size:.9rem;cursor:pointer}
+.iconbtn.on{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.iconbtn.add{background:var(--accent);border-color:var(--accent);color:#fff}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+form.search{display:flex}
+form.search input{flex:1;min-width:0;height:52px;border-radius:16px;border:1px solid var(--line);background:var(--card);color:var(--fg);
+  padding:0 18px;font:inherit;font-size:1rem}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.tile{position:relative;display:flex;flex-direction:column;gap:12px;padding:16px;border-radius:20px;min-height:132px;
+  background:color-mix(in srgb,var(--c) 16%,var(--card));border:1px solid color-mix(in srgb,var(--c) 22%,var(--line));
+  text-decoration:none;color:var(--fg);transition:transform .12s}
+.tile:active{transform:scale(.97)}
+.tname{font-family:var(--display);font-weight:800;font-size:1.15rem;margin:0;line-height:1.2;overflow-wrap:anywhere}
+.tsub{color:var(--muted);font-size:.85rem;margin:2px 0 0}
+.ic{width:48px;height:48px;border-radius:14px;background:var(--c);display:flex;align-items:center;justify-content:center;
+  font-family:var(--display);font-weight:800;font-size:1.25rem;color:#fff;margin-top:auto}
+.del{position:absolute;top:10px;right:10px;width:32px;height:32px;border-radius:50%;border:0;background:var(--danger);color:#fff;
+  font:inherit;font-weight:800;font-size:1.1rem;line-height:1;cursor:pointer}
+.mv{display:flex;gap:6px;position:absolute;bottom:12px;right:12px}
+.mv button{width:32px;height:32px;border-radius:10px;border:1px solid var(--line);background:var(--card2);color:var(--fg);font:inherit;cursor:pointer}
+.editing .tile{animation:wig .35s ease-in-out infinite alternate}
+@keyframes wig{from{transform:rotate(-.6deg)}to{transform:rotate(.6deg)}}
+.empty{grid-column:1/-1;text-align:center;color:var(--muted);padding:32px 16px;border:1px dashed var(--line);border-radius:20px}
+.note{color:var(--muted);font-size:.8rem;text-align:center;margin:0}
+.sheetbg{min-height:100%;position:fixed;inset:0;background:rgba(0,0,0,.6);display:flex;align-items:flex-end;justify-content:center;z-index:20;
+  padding-left:max(0px,env(safe-area-inset-left,0px));padding-right:max(0px,env(safe-area-inset-right,0px))}
+.sheet{width:100%;max-width:560px;background:var(--card);border-radius:24px 24px 0 0;border:1px solid var(--line);
+  padding:20px 20px calc(24px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:14px;max-height:90vh;overflow:auto}
+.sheet h2{font-family:var(--display);font-weight:800;font-size:1.3rem;margin:0}
+.lbl{font-size:.8rem;color:var(--muted);letter-spacing:.04em;text-transform:uppercase;margin:0 0 6px}
+.sheet input,.sheet select{width:100%;height:46px;border-radius:12px;border:1px solid var(--line);background:var(--bg);color:var(--fg);padding:0 14px;font:inherit}
+.quick{display:flex;flex-wrap:wrap;gap:8px}
+.chip{height:36px;padding:0 12px;border-radius:999px;border:1px solid var(--line);background:var(--bg);color:var(--fg);font:inherit;font-size:.85rem;cursor:pointer}
+.chip[disabled]{opacity:.4;cursor:default}
+.sw{display:flex;flex-wrap:wrap;gap:10px}
+.sw button{width:34px;height:34px;border-radius:50%;border:2px solid transparent;cursor:pointer}
+.sw button[aria-pressed="true"]{border-color:var(--fg)}
+.err{color:var(--danger);font-size:.85rem;margin:0}
+.row{display:flex;gap:10px}
+.row button{flex:1;height:48px;border-radius:14px;font:inherit;font-weight:600;cursor:pointer;border:1px solid var(--line);background:var(--bg);color:var(--fg)}
+.row button.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+@media (prefers-reduced-motion:reduce){.tile{transition:none}.editing .tile{animation:none}}
+</style>
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <div>
+      <h1>Feeds<span>.</span></h1>
+      <p class="tag" id="greet">Good evening, Ray</p>
+    </div>
+    <div class="hbtns">
+      <button class="iconbtn" id="editBtn" type="button" aria-pressed="false">Edit</button>
+      <button class="iconbtn add" id="addBtn" type="button" aria-label="Add a site">+ Add</button>
+    </div>
+  </header>
+  <form class="search" id="sf" role="search">
+    <input id="q" type="search" placeholder="Search with Brave or enter a URL" aria-label="Search with Brave or enter a URL" autocomplete="off" autocapitalize="off">
+  </form>
+  <nav class="grid" id="grid" aria-label="Your sites">
+    <div class="empty">Loading your sites</div>
+  </nav>
+  <p class="note" id="note">Tap a card to open it in Brave. Tap Edit to remove or reorder.</p>
+</div>
+
+<div class="sheetbg" id="sheet" hidden>
+  <form class="sheet" id="addForm" novalidate>
+    <h2>Add a site</h2>
+    <div>
+      <p class="lbl">Quick add</p>
+      <div class="quick" id="quick"></div>
+    </div>
+    <div>
+      <p class="lbl"><label for="fName">Name</label></p>
+      <input id="fName" maxlength="24" placeholder="Instagram">
+    </div>
+    <div>
+      <p class="lbl"><label for="fUrl">Web address</label></p>
+      <input id="fUrl" inputmode="url" autocapitalize="off" autocomplete="off" placeholder="instagram.com">
+    </div>
+    <div>
+      <p class="lbl"><label for="fSub">Type</label></p>
+      <select id="fSub">
+        <option>Social</option><option>Video</option><option>Music</option><option>News</option><option>Shopping</option><option>Other</option>
+      </select>
+    </div>
+    <div>
+      <p class="lbl">Color</p>
+      <div class="sw" id="sw"></div>
+    </div>
+    <p class="err" id="err" hidden></p>
+    <div class="row">
+      <button type="button" id="cancel">Cancel</button>
+      <button type="submit" class="primary">Add site</button>
+    </div>
+  </form>
+</div>
+
+<script>
+var COLORS=['#e62117','#ff4500','#fb542b','#f5a623','#3fb950','#18a999','#1d9bf0','#2f6fed','#7c4dff','#d6249f','#555560','#001935'];
+var PRESETS=[
+  {name:'X',url:'https://x.com/home',sub:'Social',color:'#555560',glyph:'X'},
+  {name:'TikTok',url:'https://www.tiktok.com/foryou',sub:'Video',color:'#18a999',glyph:'T'},
+  {name:'YouTube',url:'https://m.youtube.com/feed/subscriptions',sub:'Video',color:'#e62117',glyph:'▶'},
+  {name:'Reddit',url:'https://www.reddit.com',sub:'Social',color:'#ff4500',glyph:'r/'},
+  {name:'Tumblr',url:'https://www.tumblr.com/dashboard',sub:'Social',color:'#2f6fed',glyph:'t'},
+  {name:'Instagram',url:'https://www.instagram.com',sub:'Social',color:'#d6249f',glyph:'IG'},
+  {name:'Facebook',url:'https://m.facebook.com',sub:'Social',color:'#1d9bf0',glyph:'f'},
+  {name:'YouTube Music',url:'https://music.youtube.com',sub:'Music',color:'#e62117',glyph:'♪'},
+  {name:'Spotify',url:'https://open.spotify.com',sub:'Music',color:'#3fb950',glyph:'♫'},
+  {name:'Twitch',url:'https://www.twitch.tv',sub:'Video',color:'#7c4dff',glyph:'Tw'},
+  {name:'Threads',url:'https://www.threads.net',sub:'Social',color:'#555560',glyph:'@'},
+  {name:'LinkedIn',url:'https://www.linkedin.com/feed',sub:'Social',color:'#2f6fed',glyph:'in'},
+  {name:'WhatsApp',url:'https://web.whatsapp.com',sub:'Social',color:'#3fb950',glyph:'W'},
+  {name:'Vimeo',url:'https://vimeo.com',sub:'Video',color:'#1d9bf0',glyph:'V'},
+  {name:'Rumble',url:'https://rumble.com',sub:'Video',color:'#3fb950',glyph:'R'},
+  {name:'NYTimes',url:'https://www.nytimes.com',sub:'News',color:'#555560',glyph:'T'}
+];
+var DEFAULTS=PRESETS.slice(0,5);
+var sites=null,db=null,editing=false,pickColor=COLORS[0],pickGlyph='';
+var LS='rayfeeds.sites';
+
+function lsGet(){try{var v=JSON.parse(localStorage.getItem(LS)||'null');return Array.isArray(v)?v:null}catch(e){return null}}
+function lsSet(){try{localStorage.setItem(LS,JSON.stringify(sites))}catch(e){}}
+
+function normUrl(u){
+  u=(u||'').trim();if(!u)return '';
+  if(!/^https?:\/\//i.test(u))u='https://'+u;
+  try{var p=new URL(u);if(!/\./.test(p.hostname))return '';return p.href}catch(e){return ''}
+}
+function glyphFor(s){
+  if(s.glyph)return s.glyph;
+  var w=(s.name||'?').trim().split(/\s+/);
+  return (w.length>1?w[0][0]+w[1][0]:w[0].slice(0,1)).toUpperCase();
+}
+function el(tag,attrs,text){var e=document.createElement(tag);for(var k in attrs)e.setAttribute(k,attrs[k]);if(text!=null)e.textContent=text;return e}
+
+function render(){
+  var g=document.getElementById('grid');g.innerHTML='';
+  g.classList.toggle('editing',editing);
+  if(!sites){g.appendChild(el('div',{class:'empty'},'Loading your sites'));return}
+  if(!sites.length){g.appendChild(el('div',{class:'empty'},'No sites yet. Tap + Add to put your first one here.'));return}
+  sites.forEach(function(s,i){
+    var a=el('a',{class:'tile',href:s.url,style:'--c:'+s.color});
+    if(editing){a.removeAttribute('href');a.setAttribute('role','group');a.setAttribute('aria-label',s.name)}
+    else{a.target='_blank';a.rel='noopener'}
+    var top=el('div',{});top.appendChild(el('p',{class:'tname'},s.name));top.appendChild(el('p',{class:'tsub'},s.sub||'Site'));
+    a.appendChild(top);a.appendChild(el('span',{class:'ic','aria-hidden':'true'},glyphFor(s)));
+    if(editing){
+      var d=el('button',{class:'del',type:'button','aria-label':'Remove '+s.name},'×');
+      d.addEventListener('click',function(){removeSite(i)});a.appendChild(d);
+      var mv=el('div',{class:'mv'});
+      var up=el('button',{type:'button','aria-label':'Move '+s.name+' earlier'},'‹');
+      var dn=el('button',{type:'button','aria-label':'Move '+s.name+' later'},'›');
+      up.addEventListener('click',function(){move(i,-1)});dn.addEventListener('click',function(){move(i,1)});
+      if(i>0)mv.appendChild(up);if(i<sites.length-1)mv.appendChild(dn);a.appendChild(mv);
+    }
+    g.appendChild(a);
+  });
+}
+
+function save(changed){
+  lsSet();render();
+  if(!db)return;
+  (changed||sites).forEach(function(s,i){
+    if(s._del){db.collection('sites').doc(s.id).delete().catch(function(){});return}
+    var body={name:s.name,url:s.url,sub:s.sub||'Other',color:s.color,order:sites.indexOf(s)};
+    if(s.glyph)body.glyph=s.glyph;
+    db.collection('sites').doc(s.id).set(body).catch(function(){});
+  });
+}
+function newId(){return 's'+Date.now().toString(36)+Math.random().toString(36).slice(2,6)}
+function removeSite(i){var s=sites[i];sites.splice(i,1);s._del=true;save([s].concat(sites.slice(i)))}
+function move(i,dir){var j=i+dir;var t=sites[i];sites[i]=sites[j];sites[j]=t;save([sites[i],sites[j]])}
+
+function addSite(s){s.id=newId();sites.push(s);save([s])}
+
+/* sheet */
+var sheet=document.getElementById('sheet');
+function openSheet(){
+  document.getElementById('addForm').reset();pickGlyph='';setColor(COLORS[Math.floor(Math.random()*COLORS.length)]);
+  hideErr();buildQuick();sheet.hidden=false;setTimeout(function(){document.getElementById('fName').focus()},50);
+}
+function closeSheet(){sheet.hidden=true}
+function setColor(c){pickColor=c;document.querySelectorAll('#sw button').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.c===c?'true':'false')})}
+function showErr(m){var e=document.getElementById('err');e.textContent=m;e.hidden=false}
+function hideErr(){document.getElementById('err').hidden=true}
+function buildQuick(){
+  var q=document.getElementById('quick');q.innerHTML='';
+  PRESETS.forEach(function(p){
+    var have=sites&&sites.some(function(s){return s.name.toLowerCase()===p.name.toLowerCase()});
+    var b=el('button',{type:'button',class:'chip'},p.name);if(have)b.disabled=true;
+    b.addEventListener('click',function(){
+      document.getElementById('fName').value=p.name;document.getElementById('fUrl').value=p.url;
+      document.getElementById('fSub').value=p.sub;setColor(p.color);pickGlyph=p.glyph;hideErr();
+    });
+    q.appendChild(b);
+  });
+}
+var sw=document.getElementById('sw');
+COLORS.forEach(function(c){var b=el('button',{type:'button','data-c':c,'aria-label':'Color '+c,style:'background:'+c});b.addEventListener('click',function(){setColor(c)});sw.appendChild(b)});
+document.getElementById('fName').addEventListener('input',function(){pickGlyph='';hideErr()});
+document.getElementById('fUrl').addEventListener('input',hideErr);
+document.getElementById('addBtn').addEventListener('click',openSheet);
+document.getElementById('cancel').addEventListener('click',closeSheet);
+sheet.addEventListener('click',function(e){if(e.target===sheet)closeSheet()});
+document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!sheet.hidden)closeSheet()});
+document.getElementById('addForm').addEventListener('submit',function(e){
+  e.preventDefault();
+  var name=document.getElementById('fName').value.trim();
+  var url=normUrl(document.getElementById('fUrl').value);
+  if(!name){showErr('Enter a name for the site.');return}
+  if(!url){showErr('Enter a web address, such as instagram.com.');return}
+  if(!sites)sites=[];
+  var s={name:name,url:url,sub:document.getElementById('fSub').value,color:pickColor};
+  if(pickGlyph)s.glyph=pickGlyph;
+  addSite(s);closeSheet();
+});
+document.getElementById('editBtn').addEventListener('click',function(){
+  editing=!editing;this.textContent=editing?'Done':'Edit';this.classList.toggle('on',editing);this.setAttribute('aria-pressed',editing);render();
+});
+
+/* search */
+document.getElementById('sf').addEventListener('submit',function(e){
+  e.preventDefault();
+  var v=document.getElementById('q').value.trim();if(!v)return;
+  var href=(!/\s/.test(v)&&/\.[a-z]{2,}(\/|$)/i.test(v))?normUrl(v):'';
+  if(!href)href='https://search.brave.com/search?q='+encodeURIComponent(v);
+  var a=document.createElement('a');a.href=href;a.target='_blank';a.rel='noopener';document.body.appendChild(a);a.click();a.remove();
+});
+
+/* greeting */
+(function(){var h=new Date().getHours();document.getElementById('greet').textContent=(h<12?'Good morning':h<18?'Good afternoon':'Good evening')+', Ray'})();
+
+/* data: shared store when available, this browser otherwise */
+function useLocal(){
+  if(sites)return;
+  sites=lsGet()||DEFAULTS.map(function(p){var s=Object.assign({},p);s.id=newId();return s});
+  render();
+}
+var fallback=setTimeout(useLocal,0);
+(async function(){
+  try{
+    db=window.claude&&window.claude.use?await window.claude.use('db'):null;
+  }catch(e){db=null}
+  if(!db){clearTimeout(fallback);useLocal();return}
+  db.collection('sites').orderBy('order').onSnapshot(function(snap){
+    clearTimeout(fallback);
+    sites=snap.docs.map(function(d){var x=Object.assign({},d.data());x.id=d.id;return x});
+    lsSet();render();
+  },function(){db=null;clearTimeout(fallback);useLocal()});
+})();
+</script>
+</body>
+</html>
